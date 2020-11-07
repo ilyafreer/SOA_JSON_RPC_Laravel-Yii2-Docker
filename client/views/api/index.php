@@ -5,5 +5,5 @@
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
-    <?=$response?>
+    <h1>CLIENT SOA</h1>
 </div>

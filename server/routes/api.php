@@ -23,5 +23,3 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/data', function (Request $request, JsonRpcServer $server, DataController $controller) {
     return $server->handle($request, $controller);
 });
-
-Route::get('/test',[DataController::class,'test']);

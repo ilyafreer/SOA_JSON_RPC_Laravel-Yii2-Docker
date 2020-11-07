@@ -8,7 +8,7 @@ class JsonRpcClient
 {
     const JSON_RPC_VERSION = '2.0';
     const METHOD_URI = 'api/data';
-    const BASE_SERVER_URL = 'http://172.20.0.4/';
+    const BASE_SERVER_URL = 'http://172.22.0.3/';
 
     protected $client;
 
@@ -43,11 +43,21 @@ class JsonRpcClient
                         'params' => $params
                     ]
                 ])->getBody()->getContents();
-            var_dump($response);die;
         }catch (\Exception $e){
-            echo $e->getMessage();die;
             // тут оповещаем в логи и в телеграм или еще куда то об ошибке
+           echo $e->getMessage();die;
         }
         return json_decode($response, true);
+    }
+
+    /**
+     * Ответ в случае ошибки
+     * @return false|string
+     */
+    public function defaultErrorAnswer()
+    {
+        return [
+            'error'=>true,
+        ];
     }
 }
