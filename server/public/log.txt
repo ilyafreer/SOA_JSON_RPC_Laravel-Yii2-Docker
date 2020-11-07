@@ -1,0 +1,80 @@
+Array
+(
+    [jsonrpc] => 2.0
+    [id] => 1604745506
+    [method] => getCasinoBanner
+    [params] => Array
+        (
+            [casino_id] => 777
+        )
+
+)
+Array
+(
+    [jsonrpc] => 2.0
+    [id] => 1604745534
+    [method] => getCasinoBanner
+    [params] => Array
+        (
+            [casino_id] => 777
+        )
+
+)
+Array
+(
+    [jsonrpc] => 2.0
+    [id] => 1604745631
+    [method] => getCasinoBanner
+    [params] => Array
+        (
+            [casino_id] => 777
+        )
+
+)
+testArray
+(
+    [jsonrpc] => 2.0
+    [id] => 1604746171
+    [method] => getCasinoBanner
+    [params] => Array
+        (
+            [casino_id] => 777
+            [_token] => vS0KnOKtWZFos1ukDOTUHzvHVmYKGUuR1WiuFAXI
+        )
+
+)
+testArray
+(
+    [jsonrpc] => 2.0
+    [id] => 1604746188
+    [method] => getCasinoBanner
+    [params] => Array
+        (
+            [casino_id] => 777
+            [_token] => vS0KnOKtWZFos1ukDOTUHzvHVmYKGUuR1WiuFAXI
+        )
+
+)
+testArray
+(
+    [jsonrpc] => 2.0
+    [id] => 1604746206
+    [method] => getCasinoBanner
+    [params] => Array
+        (
+            [casino_id] => 777
+        )
+
+)
+testArray
+(
+    [jsonrpc] => 2.0
+    [id] => 1604746210
+    [method] => getCasinoBanner
+    [params] => Array
+        (
+            [casino_id] => 777
+        )
+
+)
+test
