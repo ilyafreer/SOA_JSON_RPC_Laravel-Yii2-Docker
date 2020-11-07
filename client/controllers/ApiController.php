@@ -24,6 +24,23 @@ class ApiController extends Controller
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
+
+    /**
+     * Главный метод отправки данных на SOA сервер
      * @return array|bool[]
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -39,22 +56,6 @@ class ApiController extends Controller
             }
         }
         return json_encode($answer);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
-        ];
     }
 
     /**
@@ -77,7 +78,7 @@ class ApiController extends Controller
             // данные не получили, сценарий не предусмотрен по ТЗ для примера кидаю 404
             throw new NotFoundHttpException(404);
         }else{
-            return $this->render('one',['response'=>$response['result']]);
+            return $this->render('one',['response'=>$response['result']['data']]);
         }
     }
 

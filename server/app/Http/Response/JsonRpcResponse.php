@@ -8,7 +8,7 @@ class JsonRpcResponse
 {
     const JSON_RPC_VERSION = '2.0';
 
-    public static function success(string $result, string $id = null)
+    public static function success(array $result, string $id = null)
     {
         return [
             'jsonrpc' => self::JSON_RPC_VERSION,

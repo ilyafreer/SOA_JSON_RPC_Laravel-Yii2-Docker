@@ -57,7 +57,8 @@ class JsonRpcClient
     public function defaultErrorAnswer()
     {
         return [
-            'error'=>true,
+            'status' => 'error',
+            'data' => 'Произошла техническая ошибка'
         ];
     }
 }

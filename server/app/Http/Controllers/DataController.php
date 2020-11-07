@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FormOne,
+    Illuminate\Http\Request,
+    Illuminate\Support\Facades\Validator;
+use App\Services\JsonRpcServer;
 
 class DataController extends Controller
 {
@@ -10,13 +14,14 @@ class DataController extends Controller
      * @param array $params
      * @return string
      */
-    public function getCasinoBanner(array $params):string
+    public function getCasinoBanner(Request $request): array
     {
+        $randFormId = 'id' . substr(md5(rand(99, 999)), 0, 5);
         $form =
-        <<<EOT
+            <<<EOT
 <div class="container">
     <div class="row">
-        <form name="iuf3">
+        <form name="$randFormId">
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
                 <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -26,14 +31,17 @@ class DataController extends Controller
                 <label for="exampleInputPassword1">Password</label>
                 <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
             </div>
-            <button type="button" class="btn btn-primary" onclick="send()">Submit</button>
+            <button type="button" class="btn btn-primary" onclick="func$randFormId()">Submit</button>
         </form>
     </div>
-    <div id="response"></div>
+    <div class="row" id="message$randFormId">
+
+</div>
 </div>
 <script>
-    async function send() {
-        let form = document.forms.iuf3;
+    async function func$randFormId() {
+        let form = document.forms.$randFormId;
+        let message = document.querySelector('#message$randFormId');
         let params = {
             'method':'sendFormOne',
             'params':{
@@ -50,16 +58,51 @@ class DataController extends Controller
             body: JSON.stringify(params)
         };
         let response = await fetch('/api/send', requestData);
-        // let result = await response.json();
-        console.log(response);
+        let answer = await response.json();
+        if(answer.result.status == 'success'){
+            form.innerHTML = answer.result.data
+            message.innerHTML = '';
+        }else{
+            message.innerHTML = answer.result.data;
+        }
     }
 </script>
 EOT;
-        return $form;
+        return [
+            'status' => JsonRpcServer::ANSWER_STATUSES['OK'],
+            'data' => $form
+        ];
     }
 
-    public function sendFormOne():string
+    /**
+     * Сохраняет полученные данные в базу
+     * @param array $request
+     * @return string
+     */
+    public function sendFormOne(Request $request): array
     {
-        return 'Form one saved';
+        $params = json_decode($request->getContent(), true);
+        $params = $params['params'];
+        $rules = [
+            'email' => 'required',
+            'password' => 'required'
+        ];
+
+        // Валидация параметров
+        $validator = Validator::make($params, $rules);
+        if ($validator->passes()) {
+            $formOne = new FormOne();
+            $formOne->email = $params['email'];
+            $formOne->password = md5($params['password']);
+            $formOne->save();
+            return [
+                'status' => JsonRpcServer::ANSWER_STATUSES['OK'],
+                'data' => 'Данные успешно отправлены'
+            ];
+        }
+        return [
+            'status' => JsonRpcServer::ANSWER_STATUSES['FAIL'],
+            'data' => 'Проверьте данные в форме'
+        ];
     }
 }

@@ -8,6 +8,13 @@ use App\Http\Response\JsonRpcResponse,
 
 class JsonRpcServer
 {
+    /**
+     * Статусы ответа на запрос, передаются клиенту для отработки js логики
+     */
+    const ANSWER_STATUSES = [
+        'OK'=>'success',
+        'FAIL'=>'error'
+    ];
     public function handle(Request $request, Controller $controller)
     {
         try {
@@ -15,7 +22,7 @@ class JsonRpcServer
             if (empty($content)) {
                 throw new \Exception('Empty body of request from client. Request');
             }
-            $result = $controller->{$content['method']}(...[$content['params']]);
+            $result = $controller->{$content['method']}($request);
             return JsonRpcResponse::success($result, $content['id']);
         } catch (\Exception $e) {
             return JsonRpcResponse::error($e->getMessage());
