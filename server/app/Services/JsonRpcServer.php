@@ -20,7 +20,7 @@ class JsonRpcServer
         try {
             $content = json_decode($request->getContent(), true);
             if (empty($content)) {
-                throw new \Exception('Empty body of request from client. Request');
+                throw new \Exception('Empty body of request from client');
             }
             $result = $controller->{$content['method']}($request);
             return JsonRpcResponse::success($result, $content['id']);
